@@ -3,7 +3,6 @@ module "ec2-instance" {
   version = "5.7.1"
 }
 
-
 resource "tls_private_key" "this" {
    algorithm = "ED25519"
  }

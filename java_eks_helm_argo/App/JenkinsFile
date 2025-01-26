@@ -1,0 +1,26 @@
+pipeline{
+    agent any
+    stages{
+        stage('Checkout code'){
+            steps{
+                withCredentials([usernamePassword(credentialsId: 'git-credentials', usernameVariable: 'GIT_USERNAME', passwordVariable: 'GIT_PASSWORD')]){
+                    git branch: 'master', credentialsId: 'git-credentials', url:https://github.com/sajil143pb/jenkins.git '
+                    }
+                }
+        }
+        stage('Build Docker image and push'){
+            environment{
+                DOCKER_CREDENTIALS = credentials('docker-hub-credentials')
+                }
+            steps{
+                script{
+                    docker.build('sajil143pb/myapp:latest')
+                    docker.withRegistry('https://index.docker.io/v1/', 'docker-hub-credentials'){
+                        docker.push('sajil143pb/myapp:latest')
+                        }
+                    }
+                }
+        
+        }
+    }
+}
