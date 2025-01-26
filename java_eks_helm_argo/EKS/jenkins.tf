@@ -3,6 +3,7 @@ module "ec2-instance" {
   version = "5.7.1"
 }
 
+
 resource "tls_private_key" "this" {
    algorithm = "ED25519"
  }
@@ -25,7 +26,7 @@ module "ec2_instance" {
   key_name               = aws_key_pair.this.key_name
   monitoring             = true
   associate_public_ip_address = "true"
-  user_data = file("userdata.sh")
+  user_data = "userdata.sh"
 
   depends_on = [ aws_key_pair.this ]
 
