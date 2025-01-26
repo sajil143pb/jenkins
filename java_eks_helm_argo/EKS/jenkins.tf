@@ -3,7 +3,6 @@ module "ec2-instance" {
   version = "5.7.1"
 }
 
-
 resource "tls_private_key" "this" {
    algorithm = "ED25519"
  }
@@ -17,6 +16,46 @@ resource "local_sensitive_file" "this" {
   content  = tls_private_key.this.private_key_openssh
   filename = "${path.module}/sshkey-${aws_key_pair.this.key_name}"
 }
+
+module "vpc" {
+  source = "terraform-aws-modules/vpc/aws"
+
+  name = "jenkinsvpc"
+  cidr = "10.0.0.0/16"
+
+  azs             = ["us-east-1a"]
+  public_subnets  = ["10.0.101.0/24"]
+
+  map_public_ip_on_launch = true
+
+
+  tags = {
+    Terraform = "true"
+    Environment = "dev"
+  }
+}
+
+module "jenkins_sg" {
+  source = "terraform-aws-modules/security-group/aws"
+
+  name        = "jenkins-sg"
+  description = "Security group for user-service with custom ports open within VPC, and PostgreSQL publicly open"
+  vpc_id      = module.vpc.default_vpc_id
+  ingress_cidr_blocks      = ["10.10.0.0/16"]
+  ingress_rules            = ["https-443-tcp"]
+  egress_rules = ["all-all"]
+  ingress_with_cidr_blocks = [
+    {
+      from_port   = 0
+      to_port     = 65535
+      protocol    = "-1"
+      cidr_blocks = "0.0.0.0/0"
+    },
+  ]
+}
+
+
+
 module "ec2_instance" {
   source  = "terraform-aws-modules/ec2-instance/aws"
 
@@ -26,12 +65,15 @@ module "ec2_instance" {
   key_name               = aws_key_pair.this.key_name
   monitoring             = true
   associate_public_ip_address = "true"
+  vpc_security_group_ids     = [module.jenkins_sg.security_group_id]
   user_data = "userdata.sh"
 
-  depends_on = [ aws_key_pair.this ]
+  depends_on = [ aws_key_pair.this, module.jenkins_sg, module.vpc ]
 
   tags = {
     Terraform   = "true"
     Environment = "dev"
   }
 }
+
+output "userdata" { value = file("userdata.sh") }
