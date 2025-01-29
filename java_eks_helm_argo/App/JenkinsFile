@@ -9,7 +9,7 @@ pipeline{
     stage('Checkout code'){
       steps{
         withCredentials([usernamePassword(credentialsId: 'git-credentials', usernameVariable: 'GIT_USERNAME', passwordVariable: 'GIT_PASSWORD')]){
-          git branch: 'master', credentialsId: 'git-credentials', url: 'https://github.com/sajil143pb/jenkins.git'
+          git branch: 'main', credentialsId: 'git-credentials', url: 'https://github.com/sajil143pb/jenkins.git'
         }
       }
     }
