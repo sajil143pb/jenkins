@@ -66,8 +66,7 @@ module "ec2_instance" {
   monitoring             = true
   associate_public_ip_address = "true"
   vpc_security_group_ids     = [module.jenkins_sg.security_group_id]
-  user_data = "userdata.sh"
-
+  user_data = data.template_file.jenkins_user_data.rendered
   depends_on = [ aws_key_pair.this, module.jenkins_sg, module.vpc ]
 
   tags = {
@@ -76,4 +75,8 @@ module "ec2_instance" {
   }
 }
 
-output "userdata" { value = file("userdata.sh") }
+data "template_file" "jenkins_user_data" {
+  template = file("${path.module}/userdata.sh")
+}
+
+output "userdata" { value = data.template_file.jenkins_user_data.rendered }

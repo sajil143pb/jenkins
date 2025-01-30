@@ -5,7 +5,7 @@ metadata:
   namespace: kube-system
 data:
   mapRoles: |
-    - rolearn: "arn:aws:iam::058264522852:role/eks-demo-node"
+    - rolearn: "arn:aws:iam::992382659763:role/eks-demo-node"
       username: system:node:{{EC2PrivateDNSName}}
       groups:
         - system:bootstrappers
