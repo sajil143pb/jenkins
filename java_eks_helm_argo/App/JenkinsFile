@@ -19,7 +19,7 @@ pipeline{
       }
       steps{
         script{
-          docker.build('sajil143pb/myapp:latest', '-f Dockerfile .')
+          docker.build('sajil143pb/myapp:latest', '-f App/Dockerfile .')
           docker.withRegistry('https://index.docker.io/v1/', 'docker-hub-credentials'){
             docker.push('sajil143pb/myapp:latest')
           }
