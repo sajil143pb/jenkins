@@ -21,7 +21,7 @@ pipeline{
         script{
           docker.build('sajil143pb/myapp:latest', '-f java_eks_helm_argo/App/Dockerfile .')
           docker.withRegistry('https://index.docker.io/v1/', 'docker-hub-credentials'){
-            docker.image('sajil143pb/myapp:latest').push()
+            docker.image('pbsajil/myapp:latest').push()
           }
         }
       }
