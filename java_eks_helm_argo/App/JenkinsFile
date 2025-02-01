@@ -26,5 +26,16 @@ pipeline{
         }
       }
     }
+    // stage("Deploy to EKS staging enviorment"){
+    //   steps{
+    //     script{
+    //       withCredentials([string(credentialsId: 'aws-credentials', variable: 'AWS_CREDENTIALS')]){
+    //         sh 'echo $AWS_CREDENTIALS > /root/.aws/credentials'
+    //         sh 'aws eks update-kubeconfig --region us-east-1 --name demo-eks'
+    //         sh 'helm upgrade --install myapp java_eks_helm_argo/Argocd/myapp -n staging'
+    //       }
+    //     }
+    //   }
+    // }
   }
 }
