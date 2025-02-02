@@ -16,7 +16,7 @@ pipeline{
     stage('Build Docker image and push'){
       environment{
         DOCKER_CREDENTIALS = credentials('docker-hub-credentials')
-         DOCKER_IMAGE = "'pbsajil/myapp:${BUILD_NUMBER}"
+         DOCKER_IMAGE = "pbsajil/myapp:${BUILD_NUMBER}"
       }
       steps{
         script{
