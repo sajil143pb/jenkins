@@ -8,7 +8,7 @@ spec:
 
   source:
     repoURL: https://github.com/sajil143pb/jenkins.git
-    path: java_eks_helm_argo/Argocd/myapp
+    path: wordpress_application/wordpress/App
     targetRevision: HEAD
 
   destination:
