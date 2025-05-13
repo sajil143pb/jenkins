@@ -1,19 +1,19 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: demo-app
+  name: wordpress
   namespace: argocd
 spec:
   project: default
 
   source:
     repoURL: https://github.com/sajil143pb/jenkins.git
-    path: wordpress_application/App
+    path: wordpress_application/EKS/wordpress
     targetRevision: HEAD
 
   destination:
     server: https://kubernetes.default.svc
-    namespace: demo-app
+    namespace: wordpress-app
 
   syncPolicy:
     syncOptions:

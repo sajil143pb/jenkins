@@ -8,7 +8,7 @@ spec:
 
   source:
     repoURL: https://github.com/sajil143pb/jenkins.git
-    path: wordpress_application/wordpress/App
+    path: wordpress_application/App
     targetRevision: HEAD
 
   destination:
